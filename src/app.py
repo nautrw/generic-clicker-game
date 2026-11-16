@@ -4,6 +4,7 @@ import sys
 import pygame
 
 import src.core.config as Config
+import src.core.custom_config as CustomConfig
 from src.core.scenes_manager import SceneManager
 # from src.core.utils import load_asset
 
@@ -25,7 +26,7 @@ class GameApp:
         )
 
         # pygame.display.set_icon(load_asset("game_icon"))
-        pygame.display.set_caption(Config.GAME_TITLE)
+        pygame.display.set_caption(CustomConfig.GAME_TITLE)
 
         self.clock = pygame.time.Clock()
         self.delta_time = 0.0
