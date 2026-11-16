@@ -1,8 +1,39 @@
 import math
-import pygame
 
+import pygame
 from pygame import sprite
+
+import src.core.custom_config as CustomConfig
 from src.core.utils import load_asset
+
+CLICKER_BUTTON_ANIMATION_PRESETS: dict[str, dict[str, float]] = {
+    "smooth": {
+        "hover_scale_percent": 1.1,
+        "pressed_scale_percent": 0.9,
+        "animation_speed": 18,
+    },
+    "dramatic": {
+        "hover_scale_percent": 1.25,
+        "pressed_scale_percent": 0.75,
+        "animation_speed": 20,
+    },
+    "snappy": {
+        "hover_scale_percent": 1.1,
+        "pressed_scale_percent": 0.9,
+        "animation_speed": 40,
+    },
+    "gentle": {
+        "hover_scale_percent": 1.05,
+        "pressed_scale_percent": 0.95,
+        "animation_speed": 8,
+    },
+    "reverse": {
+        "hover_scale_percent": 0.9,
+        "pressed_scale_percent": 1.1,
+        "animation_speed": 20,
+    },
+}
+
 
 class ClickerButton(sprite.Sprite):
     def __init__(self, x: float, y: float):
@@ -19,13 +50,13 @@ class ClickerButton(sprite.Sprite):
 
         self.scale = 1.0
         self.target_scale = 1.0
-        self.animation_speed = 25
 
-        # self.hover_scale_percent = 0.9
-        # self.pressed_scale_percent = 0.75
-        self.hover_scale_percent = 1.15
-        self.pressed_scale_percent = 0.9
-    
+        button_animation = CustomConfig.CLICKER_BUTTON_ANIMATION
+        if button_animation not in CLICKER_BUTTON_ANIMATION_PRESETS:
+            raise ValueError("invalid clicker button animation preset")
+
+        self.hover_scale_percent, self.pressed_scale_percent, self.animation_speed = CLICKER_BUTTON_ANIMATION_PRESETS[button_animation].values()
+
     def draw(self, surface: pygame.Surface) -> None:
         assert self.image is not None
         assert self.rect is not None
@@ -50,14 +81,10 @@ class ClickerButton(sprite.Sprite):
         #     self.animation_speed * delta_time, 1.0
         # )
         self.scale = pygame.math.lerp(
-            self.scale,
-            self.target_scale,
-            min(self.animation_speed * delta_time, 1)
+            self.scale, self.target_scale, min(self.animation_speed * delta_time, 1)
         )
 
         size = pygame.Vector2(self.original_image.size) * self.scale
-        self.image = pygame.transform.smoothscale(
-            self.original_image, size
-        )
+        self.image = pygame.transform.smoothscale(self.original_image, size)
         assert self.image is not None
         self.rect = self.image.get_frect(center=self.rect.center)
