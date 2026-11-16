@@ -55,4 +55,6 @@ class MainGameScene(Scene):
         self.click_button.draw(surface)
 
     def update(self, delta_time: float) -> None:
+        self.click_button.update(delta_time)
+
         self.gui_manager.update_elements(delta_time, pygame.mouse.get_pos())
