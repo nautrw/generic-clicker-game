@@ -1,0 +1,62 @@
+from src.scenes.main_game import MainGameScene
+import sys
+
+import pygame
+
+import src.core.config as Config
+from src.core.scenes_manager import SceneManager
+# from src.core.utils import load_asset
+
+# STREAMED_MUSIC_END = pygame.event.custom_type()
+
+
+class GameApp:
+    def __init__(self) -> None:
+        pygame.init()
+        pygame.mixer.init()
+        # pygame.mixer.music.set_endevent(STREAMED_MUSIC_END)
+        pygame.font.init()
+
+        self.running = True
+
+        self.screen = pygame.display.set_mode(
+            (Config.SCREEN_WIDTH, Config.SCREEN_HEIGHT),
+            Config.FLAGS,
+        )
+
+        # pygame.display.set_icon(load_asset("game_icon"))
+        pygame.display.set_caption(Config.GAME_TITLE)
+
+        self.clock = pygame.time.Clock()
+        self.delta_time = 0.0
+
+        self.scene_manager = SceneManager()
+        self.scene_manager.push(MainGameScene(self))
+
+    def save_quit(self) -> None:
+        # save_data_to_file(self.player_save)
+        pygame.quit()
+        sys.exit()
+
+    def run(self) -> None:
+        try:
+            while self.running:
+                events = pygame.event.get()
+
+                for event in events:
+                    if event.type == pygame.QUIT:
+                        # reminder that all exit logic is in the `finally` block
+                        # near the bottom of the function
+                        self.running = False
+                        self.save_quit()
+
+                if self.scene_manager.current_scene:
+                    self.scene_manager.current_scene.handle_events(events)
+                    self.scene_manager.current_scene.update(self.delta_time)
+
+                self.scene_manager.draw_sequentially(self.screen)
+
+                pygame.display.flip()
+                self.delta_time = self.clock.tick(Config.FPS) / 1000.0
+        finally:
+            pygame.quit()
