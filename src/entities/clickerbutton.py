@@ -19,9 +19,12 @@ class ClickerButton(sprite.Sprite):
 
         self.scale = 1.0
         self.target_scale = 1.0
-        self.min_scale = 0.85
-        self.max_scale = 1.15
         self.animation_speed = 25
+
+        # self.hover_scale_percent = 0.9
+        # self.pressed_scale_percent = 0.75
+        self.hover_scale_percent = 1.15
+        self.pressed_scale_percent = 0.9
     
     def draw(self, surface: pygame.Surface) -> None:
         assert self.image is not None
@@ -35,22 +38,21 @@ class ClickerButton(sprite.Sprite):
         mouse_pressed = pygame.mouse.get_pressed()[0]
         hovered = self.rect.collidepoint(pygame.mouse.get_pos())
 
-        if hovered:
-            self.target_scale = self.min_scale
+        if hovered and mouse_pressed:
+            self.target_scale = self.pressed_scale_percent
+        elif hovered:
+            self.target_scale = self.hover_scale_percent
         else:
             self.target_scale = 1.0
 
-        if mouse_pressed and not self.pressed_last_frame: # noqa: SIM102
-            if hovered:
-                self.target_scale = self.max_scale
-
-        if self.min_scale - 0.01 <= self.scale >= self.max_scale - 0.01:
-            self.target_scale = 1.0
-
         # rly cool, lowk dk how this works but rly cool
-        # NO LIMIT TO THE LERP
-        self.scale += (self.target_scale - self.scale) * min(
-            self.animation_speed * delta_time, 1.0
+        # self.scale += (self.target_scale - self.scale) * min(
+        #     self.animation_speed * delta_time, 1.0
+        # )
+        self.scale = pygame.math.lerp(
+            self.scale,
+            self.target_scale,
+            min(self.animation_speed * delta_time, 1)
         )
 
         size = pygame.Vector2(self.original_image.size) * self.scale
