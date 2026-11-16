@@ -18,18 +18,14 @@ SPRITES_DICT = {
     file.name.removesuffix(".png"): file
     for file in Path(resource("assets")).rglob("*.png")
 }
-MAPS_DICT = {
-    file.name.removesuffix(".json"): file
-    for file in Path(resource("maps")).rglob("*.json")
-}
 FONTS_DICT = {
     file.name.removesuffix(".ttf"): file
     for file in Path(resource("assets/fonts")).rglob("*.ttf")
 }
-SOUNDS_DICT = {
-    file.name.removesuffix(".mp3"): file
-    for file in Path(resource("assets/sounds")).rglob("*.mp3")
-}
+# SOUNDS_DICT = {
+#     file.name.removesuffix(".mp3"): file
+#     for file in Path(resource("assets/sounds")).rglob("*.mp3")
+# }
 
 def load_asset(name: str) -> pygame.Surface:
     return pygame.image.load(SPRITES_DICT[name]).convert_alpha()
@@ -41,3 +37,6 @@ def load_scaled_asset(
     new_size: tuple[int, int] = (Config.GUI_ICON_SIZE, Config.GUI_ICON_SIZE),
 ) -> pygame.Surface:
     return pygame.transform.scale(load_asset(asset_name), new_size)
+
+def get_font(font_name: str) -> Path:
+    return FONTS_DICT[font_name]
