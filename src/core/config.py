@@ -30,7 +30,6 @@ BUTTON_PRESSED_BG: ColorLike = "#171516E1"
 DARK_BG: ColorLike = "#17151650"
 
 FONT_NORMAL: str = "Oleaguid"
-FONT_NORMAL: str = "Arial"
 FONT_SIZE_SMALL: int = 24
 FONT_SIZE_SMALL: int = 24
 FONT_SIZE_MEDIUM: int = 36
@@ -46,7 +45,6 @@ SOUNDS_PATH: Path = Path("src", "assets", "sounds")
 
 ELEMENT_OUTER_PADDING: int = 8
 
-FONT_NORMAL: str = "OGAFGJF1"
 FONT_SIZE_SMALL: int = 24
 FONT_SIZE_SMALL: int = 24
 FONT_SIZE_MEDIUM: int = 36
