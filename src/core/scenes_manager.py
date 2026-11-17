@@ -3,6 +3,8 @@ from typing import TYPE_CHECKING
 
 import pygame
 
+import src.core.config as Config
+
 # Solves the circular import error as a result of src.app being uninitialized
 # TYPE_CHECKING is false at runtime so the lsp can still see it but it's not
 # actually imported
@@ -79,7 +81,7 @@ class SceneManager:
         new_scene.on_enter()
 
     def draw_sequentially(self, surface: pygame.Surface) -> None:
-        surface.fill((0, 0, 0))
+        surface.fill(Config.BACKGROUND_COLOR)
 
         for scene in self._scenes_stack:
             scene.render(surface)

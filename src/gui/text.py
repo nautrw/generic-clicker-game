@@ -22,7 +22,7 @@ class Text(Element):
         size: int = Config.FONT_SIZE_MEDIUM,
         anchor: RectAnchorMode = RectAnchorMode.TOPLEFT,
         antialias: bool = True,
-        fg_color: ColorLike = Config.TEXT_COLOR_NORMAL,
+        fg_color: ColorLike = Config.TEXT_COLOR,
         font_name: str = Config.FONT_NORMAL,
         wrap_length: int = 0,
     ) -> None:
