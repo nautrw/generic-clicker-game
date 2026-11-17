@@ -18,10 +18,11 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
     def refresh(self) -> None:
         self.elements = []
         
+        assert self.scene.click_button.rect is not None
         coins_display = Text(
             id="CoinsDisplay",
             text=f"Coins: {self.scene.coins}",
-            x=Config.SCREEN_WIDTH / 2,
+            x=self.scene.click_button.rect.centerx,
             y=Config.SCREEN_HEIGHT * .25,
             anchor=RectAnchorMode.CENTER
         )
@@ -35,7 +36,7 @@ class MainGameScene(Scene):
     def __init__(self, game: "GameApp"):
         super().__init__(game)
 
-        self.click_button = ClickerButton(Config.SCREEN_WIDTH / 2, Config.SCREEN_HEIGHT / 2)
+        self.click_button = ClickerButton(Config.SCREEN_WIDTH * .25, Config.SCREEN_HEIGHT / 2)
         self.coins = 0
         self.gui_manager = MainGameSceneGUIManager(self)
         
