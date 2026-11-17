@@ -1,5 +1,6 @@
+from src.gui.utils import make_building_container
 from src.gui.placement_system import RectAnchorMode
-from cmath import rect
+from src.core.buildings import BUILDINGS
 from src.gui.text import Text
 from src.gui.gui_manager import GUIManager
 from src.entities.clickerbutton import ClickerButton
@@ -12,14 +13,19 @@ from src.gui.container import ElementContainer
 if TYPE_CHECKING:
     from src.app import GameApp
 
+
 class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
+
     def update_coin_dependent_ui(self):
-        self.get_element_by_id("CoinsDisplay", Text).update_text(f"Coins: {self.scene.coins}")
-        
+        self.get_element_by_id("CoinsDisplay", Text).update_text(
+            f"Coins: {self.scene.coins}"
+        )
+
     def refresh(self) -> None:
         self.elements = []
-        
+
         assert self.scene.click_button.rect is not None
+
         coins_display = Text(
             id="CoinsDisplay",
             text=f"Coins: {self.scene.coins}",
@@ -36,26 +42,61 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
             height=Config.SCREEN_HEIGHT - Config.ELEMENT_OUTER_PADDING * 2,
             border=6,
         )
-        
+
+        # Initial vertical position inside the shop container
+        current_y = Config.ELEMENT_OUTER_PADDING * 2
+
+        # Spacing between building buttons
+        button_spacing = Config.ELEMENT_OUTER_PADDING
+
+        for name, pps in BUILDINGS.items():
+
+            building_button = make_building_container(
+                id=f"{name}_building_container",
+                x=Config.ELEMENT_OUTER_PADDING * 2,
+                y=current_y,
+                name=name,
+                cost=100,
+                points_per_second=pps,
+            )
+
+            building_shop_container.add_element(building_button)
+
+            # Move the next button below the previous one
+            current_y += building_button.height + button_spacing
+
         self.add_element(coins_display)
         self.add_element(building_shop_container)
-    
+
     def handle_event(self, event: pygame.Event) -> None:
         pass
 
+
 class MainGameScene(Scene):
+
     def __init__(self, game: "GameApp"):
         super().__init__(game)
 
-        self.click_button = ClickerButton(Config.SCREEN_WIDTH * .25, Config.SCREEN_HEIGHT / 2)
+        self.click_button = ClickerButton(
+            Config.SCREEN_WIDTH * .25,
+            Config.SCREEN_HEIGHT / 2
+        )
+
         self.coins = 0
+
         self.gui_manager = MainGameSceneGUIManager(self)
-        
+
     def handle_events(self, events: list[pygame.Event]) -> None:
         assert self.click_button.rect is not None
 
         for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN and self.click_button.rect.collidepoint(pygame.mouse.get_pos()):
+
+            if (
+                event.type == pygame.MOUSEBUTTONDOWN
+                and self.click_button.rect.collidepoint(
+                    pygame.mouse.get_pos()
+                )
+            ):
                 self.coins += 1
                 self.gui_manager.update_coin_dependent_ui()
 
@@ -63,10 +104,12 @@ class MainGameScene(Scene):
 
     def render(self, surface: pygame.Surface) -> None:
         self.gui_manager.render_elements(surface)
-
         self.click_button.draw(surface)
 
     def update(self, delta_time: float) -> None:
         self.click_button.update(delta_time)
 
-        self.gui_manager.update_elements(delta_time, pygame.mouse.get_pos())
+        self.gui_manager.update_elements(
+            delta_time,
+            pygame.mouse.get_pos()
+        )
