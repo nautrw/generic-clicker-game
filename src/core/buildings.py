@@ -1,7 +1,12 @@
 BUILDINGS = {
-    "clicker": 1,
-    "building2": 2
+    "clicker": {
+        "base_cost": 10,
+        "points_per_second": 1
+    },
 }
 
-def add_buliding(name, pps):
-    BUILDINGS[name] = pps
+def add_buliding(name, base_cost, points_per_second):
+    BUILDINGS[name] = {
+        "base_cost": base_cost,
+        "points_per_second": points_per_second
+    }

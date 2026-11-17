@@ -49,7 +49,7 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
         # Spacing between building buttons
         button_spacing = Config.ELEMENT_OUTER_PADDING
 
-        for name, pps in BUILDINGS.items():
+        for name, stats in BUILDINGS.items():
 
             building_button = make_building_container(
                 id=f"{name}_building_container",
@@ -57,7 +57,7 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
                 y=current_y,
                 name=name,
                 cost=100,
-                points_per_second=pps,
+                points_per_second=stats["points_per_second"],
             )
 
             building_shop_container.add_element(building_button)
