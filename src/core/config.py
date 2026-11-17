@@ -20,6 +20,7 @@ if not CustomConfig.THEME in THEMES:
 THEME_DICT = THEMES[CustomConfig.THEME]
 BACKGROUND_COLOR: ColorLike = THEME_DICT["background"]
 TEXT_COLOR: ColorLike = THEME_DICT["text"]
+CONTAINER_BORDER_COLOR: ColorLike = THEME_DICT["border_color"]
 
 BUTTON_NORMAL_BG: ColorLike = "#17151640"
 BUTTON_HOVERED_BG: ColorLike = "#171516BF"
@@ -40,6 +41,8 @@ ASSET_PATH: Path = Path("src", "assets")
 MAPS_PATH: Path = Path("src", "maps")
 FONTS_PATH: Path = Path("src", "assets", "fonts")
 SOUNDS_PATH: Path = Path("src", "assets", "sounds")
+
+ELEMENT_OUTER_PADDING: int = 8
 
 FONT_NORMAL: str = "OGAFGJF1"
 FONT_SIZE_SMALL: int = 24

@@ -7,6 +7,7 @@ import src.core.config as Config
 from typing import TYPE_CHECKING
 from src.core.scenes_manager import SceneManager, Scene
 import pygame
+from src.gui.container import ElementContainer
 
 if TYPE_CHECKING:
     from src.app import GameApp
@@ -26,8 +27,18 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
             y=Config.SCREEN_HEIGHT * .25,
             anchor=RectAnchorMode.CENTER
         )
+
+        building_shop_container = ElementContainer(
+            id="building_shop_container",
+            x=Config.SCREEN_WIDTH / 2,
+            y=Config.ELEMENT_OUTER_PADDING,
+            width=(Config.SCREEN_WIDTH / 2) - Config.ELEMENT_OUTER_PADDING,
+            height=Config.SCREEN_HEIGHT - Config.ELEMENT_OUTER_PADDING * 2,
+            border=6,
+        )
         
         self.add_element(coins_display)
+        self.add_element(building_shop_container)
     
     def handle_event(self, event: pygame.Event) -> None:
         pass
