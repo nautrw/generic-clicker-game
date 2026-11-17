@@ -1,5 +1,3 @@
-import math
-
 import pygame
 from pygame import sprite
 
@@ -39,7 +37,7 @@ class ClickerButton(sprite.Sprite):
     def __init__(self, x: float, y: float):
         sprite.Sprite.__init__(self)
 
-        self.original_image = load_asset("click_button")
+        self.original_image = load_asset(CustomConfig.CLICKER_BUTTON_IMG_NAME)
         assert self.original_image is not None
         self.rect = self.original_image.get_frect(center=(x, y))
 
