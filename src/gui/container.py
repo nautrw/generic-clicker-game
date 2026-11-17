@@ -1,3 +1,4 @@
+from cmath import rect
 import pygame
 from pygame.typing import ColorLike
 
@@ -18,6 +19,8 @@ class ElementContainer(Element):
         inner_padding: int = 2,
         bg_color: ColorLike = Config.DARK_BG,
         bg_image: pygame.Surface | None = None,
+        border: int = 0,
+        borderColor: ColorLike = Config.CONTAINER_BORDER_COLOR,
     ) -> None:
         self.x = x
         self.y = y
@@ -29,6 +32,8 @@ class ElementContainer(Element):
         self.bg_color = bg_color
 
         self.bg_image = bg_image or None
+        self.border = border
+        self.borderColor = borderColor
 
         self.surface = pygame.Surface((self.width, self.height), pygame.SRCALPHA)
 
@@ -42,7 +47,8 @@ class ElementContainer(Element):
         if self.bg_image:
             self.surface.blit(self.bg_image, (0, 0))
         else:
-            self.surface.fill(self.bg_color)
+            self.surface.fill(self.borderColor)
+            pygame.draw.rect(self.surface, self.bg_color, pygame.Rect(self.border, self.border, self.width - self.border * 2, self.height - self.border * 2))
 
         for element in self.elements:
             element.draw(self.surface)

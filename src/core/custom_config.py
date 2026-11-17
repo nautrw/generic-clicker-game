@@ -1,6 +1,8 @@
-GAME_TITLE: str = "Generic Clicker Simulator Game"
+from src.core.buildings import add_buliding
 
-CLICKER_BUTTON_ANIMATION: str = "smooth"
+GAME_TITLE = "Generic Clicker Simulator Game"
 
-THEME: str = "light"
-CLICKER_BUTTON_IMG_NAME: str = "generic_clicker_button_light"
+CLICKER_BUTTON_ANIMATION = "smooth"
+
+THEME = "light"
+CLICKER_BUTTON_IMG_NAME = "generic_clicker_button_light"
