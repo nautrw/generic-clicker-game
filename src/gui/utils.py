@@ -22,8 +22,8 @@ def make_building_container(id, x, y, name, cost, points_per_second: int, anchor
         y=Config.ELEMENT_OUTER_PADDING,
         size=Config.FONT_SIZE_SMALL,
     )
-    points_per_second_text = Text(
-        id=f"{id}_pps_text",
+    coins_per_second_text = Text(
+        id=f"{id}_cps_text",
         text=f"{points_per_second} points/s",
         x=Config.ELEMENT_OUTER_PADDING,
         y=name_text.rect.bottom,
@@ -48,7 +48,7 @@ def make_building_container(id, x, y, name, cost, points_per_second: int, anchor
     )
     
     container.add_element(name_text)
-    container.add_element(points_per_second_text)
+    container.add_element(coins_per_second_text)
     container.add_element(buy_button)
 
     return container

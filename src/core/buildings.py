@@ -1,12 +1,21 @@
-BUILDINGS = {
+from typing import TypedDict
+
+class BuildingDict(TypedDict):
+    coins_per_second: int
+    base_cost: int
+    cost_growth: float # cost = base_cost * (growth^owned)
+
+BUILDINGS: dict[str, BuildingDict] = {
     "clicker": {
-        "base_cost": 10,
-        "points_per_second": 1
+        "coins_per_second": 1,
+        "base_cost": 1,
+        "cost_growth": 1.15
     },
 }
 
-def add_buliding(name, base_cost, points_per_second):
+def add_building(name, base_cost, coins_per_second, cost_growth = 1.15):
     BUILDINGS[name] = {
+        "coins_per_second": coins_per_second,
         "base_cost": base_cost,
-        "points_per_second": points_per_second
+        "cost_growth": cost_growth
     }

@@ -57,7 +57,7 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
                 y=current_y,
                 name=name,
                 cost=100,
-                points_per_second=stats["points_per_second"],
+                points_per_second=stats["coins_per_second"],
             )
 
             building_shop_container.add_element(building_button)

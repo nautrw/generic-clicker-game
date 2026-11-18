@@ -1,4 +1,4 @@
-from src.core.buildings import add_buliding
+from src.core.buildings import add_building
 
 GAME_TITLE = "Generic Clicker Simulator Game"
 
