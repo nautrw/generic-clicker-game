@@ -1,11 +1,10 @@
-import pygame
 import src.core.config as Config
 from src.gui.container import ElementContainer
 from src.gui.button import Button
 from src.gui.text import Text
 from src.gui.placement_system import RectAnchorMode
 
-def make_building_container(id, x, y, name, cost, points_per_second: int, anchor: RectAnchorMode = RectAnchorMode.TOPLEFT):
+def make_building_container(id, x, y, name, cost, amount_owned, points_per_second: int, anchor: RectAnchorMode = RectAnchorMode.TOPLEFT):
     container = ElementContainer(
         id=f"{id}_building_container",
         x=x,
@@ -22,9 +21,9 @@ def make_building_container(id, x, y, name, cost, points_per_second: int, anchor
         y=Config.ELEMENT_OUTER_PADDING,
         size=Config.FONT_SIZE_SMALL,
     )
-    coins_per_second_text = Text(
-        id=f"{id}_cps_text",
-        text=f"{points_per_second} points/s",
+    info_text = Text(
+        id=f"{id}_info_text",
+        text=f"{points_per_second} points/s | {amount_owned} owned",
         x=Config.ELEMENT_OUTER_PADDING,
         y=name_text.rect.bottom,
         size=Config.FONT_SIZE_SMALL,
@@ -48,7 +47,7 @@ def make_building_container(id, x, y, name, cost, points_per_second: int, anchor
     )
     
     container.add_element(name_text)
-    container.add_element(coins_per_second_text)
+    container.add_element(info_text)
     container.add_element(buy_button)
 
     return container

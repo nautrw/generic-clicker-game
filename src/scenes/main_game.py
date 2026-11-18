@@ -59,6 +59,7 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
                 x=Config.ELEMENT_OUTER_PADDING * 2,
                 y=current_y,
                 name=name,
+                amount_owned=self.scene.buildings_owned[name],
                 cost=self.scene.get_building_cost(name),
                 points_per_second=stats["coins_per_second"],
             )
