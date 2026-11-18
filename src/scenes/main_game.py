@@ -1,3 +1,4 @@
+import src.core.custom_config as CustomConfig
 import math
 from collections import defaultdict
 from typing import TYPE_CHECKING
@@ -22,7 +23,7 @@ if TYPE_CHECKING:
 class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
     def update_coin_dependent_ui(self):
         self.get_element_by_id("CoinsDisplay", Text).update_text(
-            f"Coins: {self.scene.coins}"
+            f"{CustomConfig.CURRENCY_NAME}: {self.scene.coins}"
         )
 
     def refresh(self) -> None:
@@ -32,7 +33,7 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
 
         coins_display = Text(
             id="CoinsDisplay",
-            text=f"Coins: {self.scene.coins}",
+            text=f"{CustomConfig.CURRENCY_NAME}: {self.scene.coins}",
             x=self.scene.click_button.rect.centerx,
             y=Config.SCREEN_HEIGHT * 0.25,
             anchor=RectAnchorMode.CENTER,

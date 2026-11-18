@@ -7,4 +7,6 @@ CLICKER_BUTTON_ANIMATION = "smooth"
 THEME = "light"
 CLICKER_BUTTON_IMG_NAME = "generic_clicker_button_light"
 
+CURRENCY_NAME = "Points"
+
 add_building(name="Clicker", base_cost=10, coins_per_second=1)
