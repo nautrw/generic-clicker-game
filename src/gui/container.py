@@ -17,7 +17,7 @@ class ElementContainer(Element):
         height: float,
         anchor: RectAnchorMode = RectAnchorMode.TOPLEFT,
         inner_padding: int = 2,
-        bg_color: ColorLike = Config.DARK_BG,
+        bg_color: ColorLike = Config.CONTAINER_BG,
         bg_image: pygame.Surface | None = None,
         border: int = 0,
         borderColor: ColorLike = Config.CONTAINER_BORDER_COLOR,
