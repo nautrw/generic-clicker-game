@@ -7,7 +7,7 @@ from src.gui.placement_system import RectAnchorMode
 
 def make_building_container(id, x, y, name, cost, points_per_second: int, anchor: RectAnchorMode = RectAnchorMode.TOPLEFT):
     container = ElementContainer(
-        id=id,
+        id=f"{id}_building_container",
         x=x,
         y=y,
         anchor=anchor,

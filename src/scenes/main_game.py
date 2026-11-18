@@ -1,21 +1,25 @@
-from src.gui.utils import make_building_container
-from src.gui.placement_system import RectAnchorMode
-from src.core.buildings import BUILDINGS
-from src.gui.text import Text
-from src.gui.gui_manager import GUIManager
-from src.entities.clickerbutton import ClickerButton
-import src.core.config as Config
+import math
+from collections import defaultdict
 from typing import TYPE_CHECKING
-from src.core.scenes_manager import SceneManager, Scene
+
 import pygame
+
+import src.core.config as Config
+from src.core.buildings import BUILDINGS
+from src.core.scenes_manager import Scene
+from src.entities.clickerbutton import ClickerButton
+from src.gui.button import CUSTOM_BUTTON_CLICKED
 from src.gui.container import ElementContainer
+from src.gui.gui_manager import GUIManager
+from src.gui.placement_system import RectAnchorMode
+from src.gui.text import Text
+from src.gui.utils import make_building_container
 
 if TYPE_CHECKING:
     from src.app import GameApp
 
 
 class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
-
     def update_coin_dependent_ui(self):
         self.get_element_by_id("CoinsDisplay", Text).update_text(
             f"Coins: {self.scene.coins}"
@@ -30,8 +34,8 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
             id="CoinsDisplay",
             text=f"Coins: {self.scene.coins}",
             x=self.scene.click_button.rect.centerx,
-            y=Config.SCREEN_HEIGHT * .25,
-            anchor=RectAnchorMode.CENTER
+            y=Config.SCREEN_HEIGHT * 0.25,
+            anchor=RectAnchorMode.CENTER,
         )
 
         building_shop_container = ElementContainer(
@@ -50,13 +54,12 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
         button_spacing = Config.ELEMENT_OUTER_PADDING
 
         for name, stats in BUILDINGS.items():
-
             building_button = make_building_container(
-                id=f"{name}_building_container",
+                id=f"{name}_building",
                 x=Config.ELEMENT_OUTER_PADDING * 2,
                 y=current_y,
                 name=name,
-                cost=100,
+                cost=self.scene.get_building_cost(name),
                 points_per_second=stats["coins_per_second"],
             )
 
@@ -69,33 +72,45 @@ class MainGameSceneGUIManager(GUIManager["MainGameScene"]):
         self.add_element(building_shop_container)
 
     def handle_event(self, event: pygame.Event) -> None:
-        pass
+        if event.type == CUSTOM_BUTTON_CLICKED:  # noqa: SIM102
+            if event.button.id.endswith("_building_buy_button"):
+                building_name = event.button.id[:-20]
+                cost = self.scene.get_building_cost(building_name)
+
+                if self.scene.coins >= cost:
+                    self.scene.buildings_owned[building_name] += 1
+                    self.scene.coins -= cost
+
+                    self.refresh()
 
 
 class MainGameScene(Scene):
-
     def __init__(self, game: "GameApp"):
         super().__init__(game)
 
         self.click_button = ClickerButton(
-            Config.SCREEN_WIDTH * .25,
-            Config.SCREEN_HEIGHT / 2
+            Config.SCREEN_WIDTH * 0.25, Config.SCREEN_HEIGHT / 2
         )
 
         self.coins = 0
+        self.buildings_owned = defaultdict(int)
 
         self.gui_manager = MainGameSceneGUIManager(self)
+
+    def get_building_cost(self, name: str) -> int:
+        building = BUILDINGS[name]
+        base_cost = building["base_cost"]
+        growth = building["cost_growth"]
+        owned = self.buildings_owned[name]
+        return math.ceil(base_cost * (growth**owned))
 
     def handle_events(self, events: list[pygame.Event]) -> None:
         assert self.click_button.rect is not None
 
         for event in events:
-
             if (
                 event.type == pygame.MOUSEBUTTONDOWN
-                and self.click_button.rect.collidepoint(
-                    pygame.mouse.get_pos()
-                )
+                and self.click_button.rect.collidepoint(pygame.mouse.get_pos())
             ):
                 self.coins += 1
                 self.gui_manager.update_coin_dependent_ui()
@@ -109,7 +124,4 @@ class MainGameScene(Scene):
     def update(self, delta_time: float) -> None:
         self.click_button.update(delta_time)
 
-        self.gui_manager.update_elements(
-            delta_time,
-            pygame.mouse.get_pos()
-        )
+        self.gui_manager.update_elements(delta_time, pygame.mouse.get_pos())
