@@ -5,13 +5,7 @@ class BuildingDict(TypedDict):
     base_cost: int
     cost_growth: float # cost = base_cost * (growth^owned)
 
-BUILDINGS: dict[str, BuildingDict] = {
-    "Clicker": {
-        "coins_per_second": 1,
-        "base_cost": 10,
-        "cost_growth": 1.15
-    },
-}
+BUILDINGS: dict[str, BuildingDict] = {}
 
 def add_building(name, base_cost, coins_per_second, cost_growth = 1.15):
     BUILDINGS[name] = {
