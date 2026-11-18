@@ -96,6 +96,9 @@ class MainGameScene(Scene):
         self.coins = 0
         self.buildings_owned = defaultdict(int)
 
+        self.building_tick_counter = 0.0
+        self.building_tick_dt = 1.0
+
         self.gui_manager = MainGameSceneGUIManager(self)
 
     def get_building_cost(self, name: str) -> int:
@@ -126,3 +129,11 @@ class MainGameScene(Scene):
         self.click_button.update(delta_time)
 
         self.gui_manager.update_elements(delta_time, pygame.mouse.get_pos())
+
+        self.building_tick_counter += delta_time
+
+        if self.building_tick_counter >= self.building_tick_dt:
+            self.coins += sum([BUILDINGS[building]["coins_per_second"] * self.buildings_owned[building] for building in self.buildings_owned if self.buildings_owned[building] > 0])
+            self.gui_manager.update_coin_dependent_ui()
+
+            self.building_tick_counter = 0
